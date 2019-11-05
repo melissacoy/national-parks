@@ -7,14 +7,12 @@ function formatQueryParams(params){
     .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
   return queryItems.join('&');
 }
-function parkList(maxResultst=10; stateCode){
-    stateCode = stateCode.toLowerCase().replace(/\s+g, '').split(',');
+function getParkList(pickState, maxResultst=10){
 
     const params = {
         api_key : apiKey,
-        maxResults, 
-        start: 1, 
-        stateCode, 
+        stateCode: pickState,
+        limit: maxResultst
     }
     const queryString = generateQueryString(params);
     const url = searchUrl + '?' + queryString;
@@ -36,19 +34,20 @@ function displayResults(responseJson){
     $('#results').empty();
     for(let i=0; i < responseJson.data.length; i++){
         $('#results').append(`
-        <li><h2>${responseJson.data[i].fullName}<h2>
-        <p>Located In: ${responseJson.data[i].states}</p>
+        <li><h2>${responseJson.data[i].name}<h2>
+        <p>Located In: ${responseJson.data[i].description}</p>
         <a href="${responseJson.data[i].url} target="_blank">View Website</a>
-        </li`
+        </li>`
     )}
-}
+    $('#results').removeClass('hidden');
+};
 function watchForm(){
     $('form').submit(event => {
         event.preventDefault();
-        const stateCode = $('#js-search-term').val();
+        const searchState = $('#js-search-term').val();
+        const pickState = searchState.replace(/\s+/g, '&statecode=');
         const maxResults = $('#js-max-results').val();
-       
-        parkList(maxResults, stateCode)
+        getParkList(pickState, maxResults);
     })
 }
 $(watchForm);

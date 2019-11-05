@@ -3,14 +3,17 @@
   }
   
   body {
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Arial', sans-serif;
   }
   
-  button, input[type="text"] {
+ .input {
     padding: 5px;
+    border: 1px solid black;
+    border-radius: 5px;
   }
   
-  button:hover {
+
+  input[type="submit"] {
     cursor: pointer;
   }
   
